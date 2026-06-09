@@ -25,10 +25,12 @@ The local Wi-Fi address is plain HTTP, so some phone browsers will not allow off
 
 ## What Is Included
 
-- 105 practical activity ideas
+- 172 practical activity ideas
 - 30 additional researched indoor and outdoor ideas with source links
+- 67 distinct activities and rhythms from the Home-Based Enrichment Program
 - Strong outdoor and sensory-diet coverage
 - One-tap indoor and outdoor filters
+- Dedicated Faith + values ideas
 - Filters for Sylvie, Elias, and together play
 - Quick ideas for energy, calming, transitions, and after screens
 - Three-step mini-plans
