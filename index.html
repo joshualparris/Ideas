@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6f62">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="description" content="A private, phone-friendly activity picker for Sylvie and Elias.">
+  <title>Sylvie + Elias Ideas</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="app-icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#explore">Skip to all ideas</a>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Sylvie and Elias Ideas home">
+      <span class="brand-mark" aria-hidden="true">S+E</span>
+      <span>
+        <strong>Sylvie + Elias</strong>
+        <small>Things we could do</small>
+      </span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-button install-button" id="install-button" type="button" hidden>
+        Add to phone
+      </button>
+      <button class="saved-pill" id="saved-top-button" type="button" aria-label="Show saved ideas">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21V4.8Z"/></svg>
+        <span id="saved-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Pick the moment</p>
+        <h1 id="hero-title">What could help right now?</h1>
+        <p>Choose what the moment needs. You will get one practical idea from the family notes, OT sensory diet, and favourite play themes.</p>
+      </div>
+
+      <div class="need-scroller" id="need-chips" aria-label="Choose what would help">
+        <button class="need-chip active" type="button" data-need="outside">
+          <span class="chip-dot dot-leaf" aria-hidden="true"></span>Get outside
+        </button>
+        <button class="need-chip" type="button" data-need="move">
+          <span class="chip-dot dot-sun" aria-hidden="true"></span>Use big energy
+        </button>
+        <button class="need-chip" type="button" data-need="calm">
+          <span class="chip-dot dot-sky" aria-hidden="true"></span>Calm + reconnect
+        </button>
+        <button class="need-chip" type="button" data-need="together">
+          <span class="chip-dot dot-berry" aria-hidden="true"></span>Play together
+        </button>
+        <button class="need-chip" type="button" data-need="transition">
+          <span class="chip-dot dot-clay" aria-hidden="true"></span>Smooth a transition
+        </button>
+        <button class="need-chip" type="button" data-need="after-screen">
+          <span class="chip-dot dot-violet" aria-hidden="true"></span>After screens
+        </button>
+        <button class="need-chip" type="button" data-need="anything">
+          <span class="chip-dot dot-moss" aria-hidden="true"></span>Surprise us
+        </button>
+      </div>
+
+      <article class="spotlight" id="idea-spotlight" aria-live="polite"></article>
+
+      <div class="hero-actions">
+        <button class="primary-button" id="shuffle-button" type="button">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M17 3h4v4M3 7h3.5c4.8 0 6.2 10 11 10H21M17 21h4v-4M3 17h3.5c1.8 0 3.2-1.4 4.4-3.2M13.2 9.4C14.4 8 15.7 7 17.5 7H21"/></svg>
+          Another idea
+        </button>
+        <button class="secondary-button" id="plan-button" type="button">
+          Make a mini-plan
+        </button>
+      </div>
+    </section>
+
+    <section class="plan-callout section-wrap" aria-labelledby="plan-callout-title">
+      <div class="plan-steps" aria-hidden="true">
+        <span>1</span><i></i><span>2</span><i></i><span>3</span>
+      </div>
+      <div>
+        <p class="eyebrow">When one idea is not enough</p>
+        <h2 id="plan-callout-title">Build a simple three-step rhythm</h2>
+        <p>Start with connection, use the body, then finish somewhere predictable.</p>
+      </div>
+      <button class="text-button" id="plan-callout-button" type="button">Build one</button>
+    </section>
+
+    <section class="explore section-wrap" id="explore" aria-labelledby="explore-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The idea shelf</p>
+          <h2 id="explore-title">Find something that fits</h2>
+        </div>
+        <button class="clear-button" id="clear-filters-button" type="button">Clear filters</button>
+      </div>
+
+      <label class="search-box" for="search-input">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        <input id="search-input" type="search" placeholder="Search: trampoline, Bluey, 5 minutes...">
+        <button id="clear-search-button" type="button" aria-label="Clear search" hidden>&times;</button>
+      </label>
+
+      <div class="filter-block">
+        <span class="filter-label">For</span>
+        <div class="segmented-control" id="audience-filter" aria-label="Filter by who is playing">
+          <button class="active" type="button" data-audience="all">Anyone</button>
+          <button type="button" data-audience="sylvie">Sylvie</button>
+          <button type="button" data-audience="together">Together</button>
+          <button type="button" data-audience="elias">Elias</button>
+        </div>
+      </div>
+
+      <div class="category-scroller" id="category-filter" aria-label="Filter by activity type">
+        <button class="category-chip active" type="button" data-category="all">All ideas</button>
+        <button class="category-chip" type="button" data-category="Outdoor">Outdoor</button>
+        <button class="category-chip" type="button" data-category="Sensory diet">Sensory diet</button>
+        <button class="category-chip" type="button" data-category="Together">Together</button>
+        <button class="category-chip" type="button" data-category="Creative + curious">Creative + curious</button>
+        <button class="category-chip" type="button" data-category="Calm + cosy">Calm + cosy</button>
+        <button class="category-chip" type="button" data-category="Everyday rhythm">Everyday rhythm</button>
+        <button class="category-chip" type="button" data-category="saved">Saved</button>
+      </div>
+
+      <div class="result-summary">
+        <strong id="result-count">0 ideas</strong>
+        <span id="result-context">from your notes</span>
+      </div>
+
+      <div class="ideas-grid" id="ideas-list"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <span aria-hidden="true">?</span>
+        <h3>No ideas match that mix</h3>
+        <p>Clear a filter or try a broader search.</p>
+      </div>
+      <button class="load-more-button" id="load-more-button" type="button" hidden>Show more ideas</button>
+    </section>
+
+    <section class="care-note section-wrap" aria-labelledby="care-title">
+      <div class="care-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 21s8-4.8 8-11.2A4.8 4.8 0 0 0 12 6.2 4.8 4.8 0 0 0 4 9.8C4 16.2 12 21 12 21Z"/></svg>
+      </div>
+      <div>
+        <h2 id="care-title">Connection first</h2>
+        <p>These are prompts from your notes, not a demand list. Offer two choices, keep language short when things are heightened, and stop any sensory activity that feels uncomfortable or overstimulating.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made from the Sylvie + Elias family notes. Stored locally on this device.</p>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="active" type="button" data-nav="top">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v9h-5v-6H9v6H4v-9Z"/></svg>
+      <span>Pick</span>
+    </button>
+    <button type="button" data-nav="explore">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+      <span>Explore</span>
+    </button>
+    <button type="button" data-nav="saved">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21V4.8Z"/></svg>
+      <span>Saved</span>
+    </button>
+  </nav>
+
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <section class="plan-sheet" id="plan-sheet" role="dialog" aria-modal="true" aria-labelledby="plan-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-heading">
+      <div>
+        <p class="eyebrow">A gentle sequence</p>
+        <h2 id="plan-title">Your mini-plan</h2>
+      </div>
+      <button class="close-button" id="close-plan-button" type="button" aria-label="Close mini-plan">&times;</button>
+    </div>
+    <p class="sheet-intro" id="plan-intro"></p>
+    <ol class="mini-plan-list" id="mini-plan-list"></ol>
+    <div class="sheet-actions">
+      <button class="secondary-button" id="new-plan-button" type="button">Try another</button>
+      <button class="primary-button" id="close-plan-done-button" type="button">That works</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "Sylvie + Elias Ideas",
+  "short_name": "S+E Ideas",
+  "description": "A private activity picker for Sylvie and Elias.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fbfaf5",
+  "theme_color": "#2f6f62",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
