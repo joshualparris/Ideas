@@ -805,6 +805,13 @@ h3 {
   font-size: 0.62rem;
 }
 
+.source-link {
+  color: var(--forest-dark);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .empty-state {
   padding: 38px 20px;
   border: 1px dashed #cddad2;
