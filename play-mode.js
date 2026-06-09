@@ -23,6 +23,7 @@
     historyList: document.querySelector("#history-list"),
     historyEmpty: document.querySelector("#history-empty"),
     historyClear: document.querySelector("#history-clear-button"),
+    historyExport: document.querySelector("#history-export-button"),
     triedCount: document.querySelector("#tried-count"),
     workedCount: document.querySelector("#worked-count"),
     favouriteCount: document.querySelector("#favourite-count")
@@ -197,6 +198,7 @@
     const recent = latestByIdea().slice(0, 8);
     elements.historyEmpty.hidden = recent.length > 0;
     elements.historyClear.hidden = history.length === 0;
+    elements.historyExport.hidden = history.length === 0;
     elements.historyList.innerHTML = recent.map((entry) => {
       const date = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(new Date(entry.completedAt));
       return `
@@ -241,6 +243,25 @@
     history.splice(0);
     localStorage.removeItem(HISTORY_KEY);
     renderHistory();
+  });
+  elements.historyExport.addEventListener("click", () => {
+    const payload = {
+      app: "Sylvie + Elias Ideas",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      activityHistory: history
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `sylvie-elias-activity-history-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    const toast = document.querySelector("#toast");
+    toast.textContent = "Private activity history downloaded";
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 1800);
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !elements.sheet.hidden) closePlay();

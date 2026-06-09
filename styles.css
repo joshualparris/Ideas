@@ -1681,6 +1681,13 @@ footer {
   color: var(--ink-soft);
 }
 
+.history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .history-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

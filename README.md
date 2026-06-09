@@ -30,6 +30,7 @@ Every regular and use-what-we-have idea now has a **Start this idea** action. Gu
 - a quick **Loved it**, **Worked well**, or **Not today** finish
 
 The **Lately** tab keeps a small private history in that browser so reliable family wins can be repeated. It is not a clinical record and does not leave the device.
+That private history can also be downloaded as a JSON backup from the **Lately** tab.
 
 The idea shelf also includes quick-fit filters for five-minute ideas, no-setup ideas, before dinner, bedtime, rainy days, and out-and-about moments.
 
