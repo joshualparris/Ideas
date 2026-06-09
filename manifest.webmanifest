@@ -1,7 +1,7 @@
 {
   "name": "Sylvie + Elias Ideas",
   "short_name": "S+E Ideas",
-  "description": "A private activity picker for Sylvie and Elias.",
+  "description": "A private activity picker and use-what-we-have idea builder for Sylvie and Elias.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#fbfaf5",

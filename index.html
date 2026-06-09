@@ -25,6 +25,7 @@
       </span>
     </a>
     <div class="top-actions">
+      <a class="icon-button top-things-link" href="#things">Our stuff</a>
       <button class="icon-button install-button" id="install-button" type="button" hidden>
         Add to phone
       </button>
@@ -144,6 +145,172 @@
       <button class="load-more-button" id="load-more-button" type="button" hidden>Show more ideas</button>
     </section>
 
+    <section class="things-section section-wrap" id="things" aria-labelledby="things-title">
+      <div class="things-hero">
+        <div>
+          <p class="eyebrow">Stuff &rarr; ideas</p>
+          <h2 id="things-title">Use what we've got</h2>
+          <p>Pick up to five things already nearby. The builder will find practical play ideas without adding another shopping job.</p>
+        </div>
+        <span class="privacy-pill">Private on this device</span>
+      </div>
+
+      <section class="today-panel" aria-labelledby="today-title">
+        <div class="things-heading">
+          <div>
+            <p class="eyebrow">Quick selector</p>
+            <h3 id="today-title">Today we have...</h3>
+          </div>
+          <button class="clear-button" id="clear-today-button" type="button">Clear</button>
+        </div>
+        <div class="today-selected" id="today-selected"></div>
+        <p class="helper-text" id="today-helper">Select 2-3 things to get better ideas.</p>
+        <div class="available-things" id="available-things" aria-label="Available things"></div>
+      </section>
+
+      <section class="builder-panel" aria-labelledby="builder-title">
+        <div class="things-heading">
+          <div>
+            <p class="eyebrow">Idea builder</p>
+            <h3 id="builder-title">What does the moment need?</h3>
+          </div>
+          <button class="primary-button compact-button" id="build-stuff-ideas-button" type="button">Find ideas</button>
+        </div>
+
+        <div class="builder-needs" id="builder-needs" aria-label="Choose current need">
+          <button class="active" type="button" data-builder-need="surprise">Surprise us</button>
+          <button type="button" data-builder-need="connection">Calm connection</button>
+          <button type="button" data-builder-need="creative">Creative play</button>
+          <button type="button" data-builder-need="big">Big energy</button>
+          <button type="button" data-builder-need="outside">Outside time</button>
+          <button type="button" data-builder-need="transition">Transition help</button>
+          <button type="button" data-builder-need="after-screen">After screens</button>
+          <button type="button" data-builder-need="special">Special playtime</button>
+        </div>
+
+        <details class="builder-filters">
+          <summary>More filters</summary>
+          <div class="builder-filter-grid">
+            <label>Search
+              <input id="stuff-search" type="search" placeholder="box, drawing, bridge...">
+            </label>
+            <label>Best for
+              <select id="stuff-child-filter">
+                <option value="all">Anyone</option>
+                <option value="sylvie">Sylvie</option>
+                <option value="elias">Elias</option>
+                <option value="together">Together</option>
+              </select>
+            </label>
+            <label>Place
+              <select id="stuff-place-filter">
+                <option value="all">Inside or outside</option>
+                <option value="indoor">Indoor</option>
+                <option value="outdoor">Outdoor</option>
+              </select>
+            </label>
+            <label>Energy
+              <select id="stuff-energy-filter">
+                <option value="all">Any energy</option>
+                <option value="calm">Calm</option>
+                <option value="medium">Medium</option>
+                <option value="big">Big energy</option>
+              </select>
+            </label>
+            <label>Category
+              <select id="stuff-category-filter">
+                <option value="all">Any category</option>
+                <option value="Art + drawing">Art + drawing</option>
+                <option value="Making + building">Making + building</option>
+                <option value="Pretend play">Pretend play</option>
+                <option value="Big body / outdoor">Big body / outdoor</option>
+                <option value="Cosy / calming">Cosy / calming</option>
+                <option value="Screens / tech">Screens / tech</option>
+                <option value="Special playtime">Special playtime</option>
+              </select>
+            </label>
+            <label>Setup time
+              <select id="stuff-setup-filter">
+                <option value="all">Any setup</option>
+                <option value="3">3 minutes or less</option>
+                <option value="5">5 minutes or less</option>
+                <option value="10">10 minutes or less</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <div class="stuff-result-summary">
+          <strong id="stuff-result-count">Choose some things</strong>
+          <span id="stuff-result-context">No shopping needed when every material is selected or owned.</span>
+        </div>
+        <div class="stuff-ideas-grid" id="stuff-ideas-list"></div>
+        <div class="empty-state" id="stuff-empty-state">
+          <span aria-hidden="true">+</span>
+          <h3>Add a few things you have</h3>
+          <p>Paper, boxes, blankets, outside toys, or anything already nearby is a good start.</p>
+        </div>
+      </section>
+
+      <details class="inventory-panel">
+        <summary>
+          <span>
+            <strong>Things We Have</strong>
+            <small>Manage starter and custom items</small>
+          </span>
+          <span id="owned-count">0 available</span>
+        </summary>
+        <div class="inventory-groups" id="inventory-groups"></div>
+
+        <form class="add-thing-form" id="add-thing-form">
+          <div class="things-heading">
+            <div>
+              <p class="eyebrow">Local only</p>
+              <h3>Add a custom item</h3>
+            </div>
+          </div>
+          <div class="builder-filter-grid">
+            <label>Item name
+              <input id="new-thing-name" name="name" required maxlength="60" placeholder="e.g. balance bike">
+            </label>
+            <label>Category
+              <select id="new-thing-category" name="category" required></select>
+            </label>
+            <label>Place
+              <select name="place">
+                <option value="indoor">Indoor</option>
+                <option value="outdoor">Outdoor</option>
+                <option value="both">Both</option>
+              </select>
+            </label>
+            <label>Best for
+              <select name="audience">
+                <option value="anyone">Anyone</option>
+                <option value="sylvie">Sylvie</option>
+                <option value="elias">Elias</option>
+                <option value="together">Together</option>
+              </select>
+            </label>
+            <label>Energy
+              <select name="energy">
+                <option value="calm">Calm</option>
+                <option value="medium">Medium</option>
+                <option value="big">Big energy</option>
+              </select>
+            </label>
+            <label>Notes <span>(optional)</span>
+              <input name="notes" maxlength="120" placeholder="How we usually use it">
+            </label>
+            <label class="wide-field">Safety note <span>(optional)</span>
+              <input name="safety" maxlength="160" placeholder="Supervision or setup reminder">
+            </label>
+          </div>
+          <button class="primary-button" type="submit">Add to our things</button>
+          <p class="privacy-note">Custom items and notes stay in this browser's localStorage. Do not enter medical or private therapy details.</p>
+        </form>
+      </details>
+    </section>
+
     <section class="care-note section-wrap" aria-labelledby="care-title">
       <div class="care-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M12 21s8-4.8 8-11.2A4.8 4.8 0 0 0 12 6.2 4.8 4.8 0 0 0 4 9.8C4 16.2 12 21 12 21Z"/></svg>
@@ -167,6 +334,10 @@
     <button type="button" data-nav="explore">
       <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
       <span>Explore</span>
+    </button>
+    <button type="button" data-nav="things">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 8h16v12H4zM8 8V5h8v3M4 13h16"/></svg>
+      <span>Our stuff</span>
     </button>
     <button type="button" data-nav="saved">
       <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21V4.8Z"/></svg>
@@ -194,6 +365,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="things-data.js"></script>
   <script src="app.js"></script>
+  <script src="things.js"></script>
 </body>
 </html>

@@ -2682,6 +2682,58 @@ const enrichmentIdeas = [
 
 ideas.push(...enrichmentIdeas);
 
+const existingMaterialHints = {
+  "paper": ["paper", "draw", "bingo", "map", "poster", "menu", "card", "chart", "journal"],
+  "pencils": ["pencil", "draw", "bingo", "map", "poster", "menu", "card", "chart", "journal"],
+  "cardboard-boxes": ["cardboard", "box"],
+  "sticky-tape": ["tape"],
+  "lego-blocks": ["block", "magnetic tile", "build", "tower"],
+  "toy-figures": ["toy", "animal", "doll", "figure", "puppet"],
+  "play-kitchen": ["kitchen", "restaurant", "tea shop"],
+  "blankets": ["blanket", "cubby", "nest"],
+  "cushions": ["cushion", "pillow", "crash"],
+  "books": ["book", "story", "reading"],
+  "backyard": ["backyard", "outside", "outdoor", "garden"],
+  "swing-set": ["swing"],
+  "couches": ["couch", "lounge"],
+  "dining-table": ["table"],
+  "lots-of-toys": ["toy"]
+};
+
+const skillDefaults = {
+  "Outdoor": ["exploration", "gross motor"],
+  "Sensory diet": ["body awareness", "regulation"],
+  "Together": ["connection", "social play"],
+  "Creative + curious": ["creativity", "problem-solving"],
+  "Faith + values": ["reflection", "connection"],
+  "Calm + cosy": ["regulation", "rest"],
+  "Everyday rhythm": ["independence", "sequencing"]
+};
+
+function inferStructuredIdeaFields(idea) {
+  const text = [idea.title, idea.summary, idea.setup, idea.where, ...idea.steps].join(" ").toLowerCase();
+  const materials = Object.entries(existingMaterialHints)
+    .filter(([, hints]) => hints.some((hint) => text.includes(hint)))
+    .map(([id]) => id)
+    .slice(0, 6);
+  const outdoor = ["outdoor", "outside", "backyard", "yard", "park", "garden", "playground", "trampoline", "swing"].some((word) => idea.where.toLowerCase().includes(word));
+  const sensoryProfile = [
+    ...(idea.needs.includes("calm") ? ["calm"] : []),
+    ...(idea.needs.includes("move") || idea.needs.includes("outside") ? ["movement"] : []),
+    ...(idea.category === "Sensory diet" ? ["heavyWork"] : []),
+    ...(idea.category === "Creative + curious" || idea.needs.includes("creative") ? ["creative", "problemSolving"] : []),
+    ...(idea.category === "Together" ? ["pretend"] : [])
+  ];
+  idea.materials = idea.materials || materials;
+  idea.spaces = idea.spaces || [outdoor ? "outdoor" : "indoor"];
+  idea.skills = idea.skills || skillDefaults[idea.category] || ["play"];
+  idea.sensoryProfile = idea.sensoryProfile || [...new Set(sensoryProfile.length ? sensoryProfile : ["calm"])];
+  idea.setupMinutes = idea.setupMinutes ?? (/no setup/i.test(idea.setup) ? 0 : 5);
+  idea.cleanupMinutes = idea.cleanupMinutes ?? (idea.materials.length ? 3 : 1);
+}
+
+ideas.forEach(inferStructuredIdeaFields);
+
 const categoryColors = {
   "Outdoor": "#91bd91",
   "Sensory diet": "#e0b64c",
@@ -2787,7 +2839,13 @@ function ideaSearchText(idea) {
     idea.source,
     idea.minutes,
     ...idea.needs,
-    ...idea.steps
+    ...idea.steps,
+    ...idea.materials,
+    ...idea.spaces,
+    ...idea.skills,
+    ...idea.sensoryProfile,
+    idea.setupMinutes,
+    idea.cleanupMinutes
   ].join(" ").toLowerCase();
 }
 
@@ -2866,6 +2924,15 @@ function ideaCardHtml(idea) {
   const source = idea.sourceUrl
     ? `<a class="source-pill source-link" href="${escapeHtml(idea.sourceUrl)}" target="_blank" rel="noopener noreferrer">Research: ${escapeHtml(idea.source)}</a>`
     : `<span class="source-pill">From: ${escapeHtml(idea.source)}</span>`;
+  const materialNames = idea.materials.map((id) => window.STARTER_THINGS?.find((item) => item.id === id)?.name || id.replaceAll("-", " "));
+  const structured = `
+    <div class="structured-details">
+      <div><strong>Setup</strong><span>${idea.setupMinutes} min</span></div>
+      <div><strong>Reset</strong><span>${idea.cleanupMinutes} min</span></div>
+      <div><strong>Skills</strong><span>${idea.skills.map(escapeHtml).join(", ")}</span></div>
+      ${materialNames.length ? `<div><strong>Useful things</strong><span>${materialNames.map(escapeHtml).join(", ")}</span></div>` : ""}
+    </div>
+  `;
   return `
     <article class="idea-card" style="${categoryStyle(idea.category)}">
       <div class="card-top">
@@ -2887,6 +2954,7 @@ function ideaCardHtml(idea) {
         <ol>${idea.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
         <div class="why-box"><strong>Why it may help:</strong> ${escapeHtml(idea.why)}</div>
         <div class="say-box">${escapeHtml(idea.say)}</div>
+        ${structured}
         ${caution}
         <div class="source-row">${source}</div>
       </div>
