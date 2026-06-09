@@ -256,6 +256,7 @@
         <div class="uses-row"><strong>Uses</strong>${uses}</div>
         <ol>${idea.steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ol>
         <p class="stuff-script">${esc(idea.script)}</p>
+        <button class="start-idea-button" type="button" data-start-idea="${esc(idea.id)}">Start guided play</button>
         <div class="stuff-safety"><strong>Supervision:</strong> ${esc(idea.safety)}</div>
         <div class="stuff-reset"><strong>Reset:</strong> ${esc(idea.reset)}</div>
         <div class="skills-row">${idea.skills.map((skill) => `<span>${esc(skill)}</span>`).join("")}</div>

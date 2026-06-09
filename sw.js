@@ -1,11 +1,13 @@
-const CACHE_NAME = "sylvie-elias-ideas-v5";
+const CACHE_NAME = "sylvie-elias-ideas-v6";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./things-data.js",
+  "./moment-ideas.js",
   "./app.js",
   "./things.js",
+  "./play-mode.js",
   "./manifest.webmanifest",
   "./app-icon.svg"
 ];

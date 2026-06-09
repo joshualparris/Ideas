@@ -118,6 +118,19 @@
         </div>
       </div>
 
+      <div class="filter-block">
+        <span class="filter-label">Quick fits</span>
+        <div class="moment-scroller" id="moment-filter" aria-label="Filter by a real-life moment">
+          <button class="moment-chip active" type="button" data-moment="all">Any moment</button>
+          <button class="moment-chip" type="button" data-moment="five">5 minutes</button>
+          <button class="moment-chip" type="button" data-moment="no-setup">No setup</button>
+          <button class="moment-chip" type="button" data-moment="before-dinner">Before dinner</button>
+          <button class="moment-chip" type="button" data-moment="bedtime">Bedtime</button>
+          <button class="moment-chip" type="button" data-moment="rainy">Rainy day</button>
+          <button class="moment-chip" type="button" data-moment="out-and-about">Out &amp; about</button>
+        </div>
+      </div>
+
       <div class="category-scroller" id="category-filter" aria-label="Filter by activity type">
         <button class="category-chip active" type="button" data-category="all">All ideas</button>
         <button class="category-chip" type="button" data-category="inside">Indoor</button>
@@ -311,6 +324,27 @@
       </details>
     </section>
 
+    <section class="history-section section-wrap" id="history" aria-labelledby="history-title">
+      <div class="history-hero">
+        <div>
+          <p class="eyebrow">Private family memory</p>
+          <h2 id="history-title">What worked lately</h2>
+          <p>Start an idea, use the simple play guide, then record whether it fit the moment. This stays only on this device.</p>
+        </div>
+        <button class="clear-button" id="history-clear-button" type="button">Clear history</button>
+      </div>
+      <div class="history-stats" aria-label="Activity history summary">
+        <div><strong id="tried-count">0</strong><span>times tried</span></div>
+        <div><strong id="worked-count">0</strong><span>worked or loved</span></div>
+        <div><strong id="favourite-count">0</strong><span>ideas loved</span></div>
+      </div>
+      <div class="history-list" id="history-list"></div>
+      <div class="history-empty" id="history-empty">
+        <strong>No activity history yet</strong>
+        <p>Tap <b>Start this idea</b> on any activity. When you finish, mark how it went so the family's reliable wins are easy to find again.</p>
+      </div>
+    </section>
+
     <section class="care-note section-wrap" aria-labelledby="care-title">
       <div class="care-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M12 21s8-4.8 8-11.2A4.8 4.8 0 0 0 12 6.2 4.8 4.8 0 0 0 4 9.8C4 16.2 12 21 12 21Z"/></svg>
@@ -343,6 +377,10 @@
       <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21V4.8Z"/></svg>
       <span>Saved</span>
     </button>
+    <button type="button" data-nav="history">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4v16M5 7h10a4 4 0 0 1 0 8H5M13 11h6"/></svg>
+      <span>Lately</span>
+    </button>
   </nav>
 
   <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
@@ -363,10 +401,63 @@
     </div>
   </section>
 
+  <div class="sheet-backdrop" id="play-backdrop" hidden></div>
+  <section class="play-sheet" id="play-sheet" role="dialog" aria-modal="true" aria-labelledby="play-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-heading">
+      <div>
+        <p class="eyebrow">Guided play mode</p>
+        <h2 id="play-title">Activity</h2>
+      </div>
+      <button class="close-button" id="close-play-button" type="button" aria-label="Close guided play mode">&times;</button>
+    </div>
+    <p class="sheet-intro" id="play-summary"></p>
+    <p class="play-script" id="play-script"></p>
+
+    <div class="play-timer-panel">
+      <div>
+        <span class="filter-label">Gentle timer</span>
+        <strong class="play-timer" id="play-timer">10:00</strong>
+        <small id="play-timer-status">Ready when you are</small>
+      </div>
+      <div class="play-timer-actions">
+        <button class="primary-button compact-button" id="play-timer-start" type="button">Start</button>
+        <button class="secondary-button compact-button" id="play-timer-reset" type="button">Reset</button>
+        <button class="secondary-button compact-button" id="play-add-minute" type="button">+1 min</button>
+      </div>
+      <div class="timer-presets" id="play-timer-presets">
+        <button type="button" data-timer-minutes="2">2 min reset</button>
+        <button type="button" data-timer-minutes="5">5 min</button>
+        <button type="button" data-timer-minutes="10">10 min</button>
+      </div>
+    </div>
+
+    <div class="play-step-heading">
+      <h3>Simple steps</h3>
+      <span id="play-progress">0 steps checked</span>
+    </div>
+    <div class="play-steps" id="play-steps"></div>
+    <div class="caution-box play-caution" id="play-caution"></div>
+
+    <div class="play-finish">
+      <div>
+        <p class="eyebrow">Finish without overthinking it</p>
+        <h3>How did it fit today?</h3>
+      </div>
+      <div class="outcome-buttons">
+        <button type="button" data-play-outcome="loved">Loved it</button>
+        <button type="button" data-play-outcome="worked">Worked well</button>
+        <button type="button" data-play-outcome="not-today">Not today</button>
+      </div>
+    </div>
+  </section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="things-data.js"></script>
+  <script src="moment-ideas.js"></script>
   <script src="app.js"></script>
   <script src="things.js"></script>
+  <script src="play-mode.js"></script>
 </body>
 </html>

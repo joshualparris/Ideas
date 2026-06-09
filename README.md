@@ -20,6 +20,19 @@ The builder ranks exact and close matches and shows:
 - supervision notes
 - a **No shopping needed** badge when all materials are owned
 
+## Guided Play And What Worked
+
+Every regular and use-what-we-have idea now has a **Start this idea** action. Guided play mode provides:
+
+- one parent script and clear checkable steps
+- a gentle activity timer with a one-minute finishing cue
+- supervision reminders
+- a quick **Loved it**, **Worked well**, or **Not today** finish
+
+The **Lately** tab keeps a small private history in that browser so reliable family wins can be repeated. It is not a clinical record and does not leave the device.
+
+The idea shelf also includes quick-fit filters for five-minute ideas, no-setup ideas, before dinner, bedtime, rainy days, and out-and-about moments.
+
 Starter inventory is maintained in `things-data.js`. It includes art supplies, cardboard/MakeDo, pretend-play resources, outdoor equipment, cosy items, technology, furniture, spaces, and protected special-play items.
 
 ## Privacy And Local Storage
@@ -51,7 +64,7 @@ The local Wi-Fi address is plain HTTP, so some phone browsers will not allow off
 
 ## What Is Included
 
-- 172 practical activity ideas
+- 192 practical activity ideas
 - 30 additional researched indoor and outdoor ideas with source links
 - 67 distinct activities and rhythms from the Home-Based Enrichment Program
 - Strong outdoor and sensory-diet coverage
@@ -64,6 +77,9 @@ The local Wi-Fi address is plain HTTP, so some phone browsers will not allow off
 - 33 structured use-what-we-have ideas
 - Custom local-only inventory and a Today we have selector
 - Matching by material, child, indoor/outdoor, energy, category, need, and setup time
+- Guided play mode with checkable steps and a gentle timer
+- Private activity outcomes and recent wins
+- Six quick-fit real-life filters
 
 ## Project Structure
 
@@ -71,7 +87,9 @@ The local Wi-Fi address is plain HTTP, so some phone browsers will not allow off
 - `styles.css` - mobile-first styling
 - `app.js` - original idea picker, filters, favourites, and mini-plans
 - `things-data.js` - starter inventory and structured material ideas
+- `moment-ideas.js` - additional low-prep ideas for common family moments
 - `things.js` - local inventory, matching, and Idea Builder behaviour
+- `play-mode.js` - guided play timer and private activity history
 - `sw.js` - offline asset cache
 
 ## Check And Deploy
@@ -81,7 +99,9 @@ This is a static app with no package installation or build step.
 ```powershell
 node --check app.js
 node --check things-data.js
+node --check moment-ideas.js
 node --check things.js
+node --check play-mode.js
 vercel deploy . --prod -y
 ```
 

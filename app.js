@@ -2680,7 +2680,7 @@ const enrichmentIdeas = [
   ...idea
 }));
 
-ideas.push(...enrichmentIdeas);
+ideas.push(...enrichmentIdeas, ...(window.MOMENT_IDEAS || []));
 
 const existingMaterialHints = {
   "paper": ["paper", "draw", "bingo", "map", "poster", "menu", "card", "chart", "journal"],
@@ -2768,6 +2768,7 @@ const state = {
   need: "outside",
   category: "all",
   audience: "all",
+  moment: "all",
   query: "",
   spotlightId: null,
   visibleCount: 12,
@@ -2783,6 +2784,7 @@ const elements = {
   searchInput: document.querySelector("#search-input"),
   clearSearchButton: document.querySelector("#clear-search-button"),
   audienceFilter: document.querySelector("#audience-filter"),
+  momentFilter: document.querySelector("#moment-filter"),
   categoryFilter: document.querySelector("#category-filter"),
   clearFiltersButton: document.querySelector("#clear-filters-button"),
   resultCount: document.querySelector("#result-count"),
@@ -2855,6 +2857,20 @@ function isIndoorIdea(idea) {
   return idea.category !== "Outdoor" && !idea.needs.includes("outside") && !outdoorWords.some((word) => location.includes(word));
 }
 
+function matchesMoment(idea) {
+  const text = `${idea.title} ${idea.where} ${idea.setup} ${idea.summary}`.toLowerCase();
+  const momentRules = {
+    all: () => true,
+    five: () => idea.minutes <= 5,
+    "no-setup": () => idea.setupMinutes <= 1 || /no setup/.test(idea.setup.toLowerCase()),
+    "before-dinner": () => isIndoorIdea(idea) && idea.needs.includes("transition") && (idea.needs.includes("move") || idea.category === "Everyday rhythm"),
+    bedtime: () => idea.needs.includes("calm") && idea.needs.includes("transition") && (text.includes("bed") || text.includes("bath") || isIndoorIdea(idea)),
+    rainy: () => isIndoorIdea(idea) && (idea.needs.includes("creative") || idea.needs.includes("together") || idea.category === "Calm + cosy"),
+    "out-and-about": () => ["waiting", "cafe", "shop", "park", "neighbourhood", "car", "walk"].some((word) => text.includes(word))
+  };
+  return (momentRules[state.moment] || momentRules.all)();
+}
+
 function filteredIdeas() {
   const query = state.query.trim().toLowerCase();
   return ideas.filter((idea) => {
@@ -2866,8 +2882,9 @@ function filteredIdeas() {
           ? isIndoorIdea(idea)
           : idea.category === state.category);
     const audienceMatch = state.audience === "all" || idea.audience.includes(state.audience);
+    const momentMatch = matchesMoment(idea);
     const queryMatch = !query || ideaSearchText(idea).includes(query);
-    return categoryMatch && audienceMatch && queryMatch;
+    return categoryMatch && audienceMatch && momentMatch && queryMatch;
   });
 }
 
@@ -2912,6 +2929,7 @@ function renderSpotlight() {
         <span class="meta-pill">${escapeHtml(audienceLabel(idea.audience))}</span>
       </div>
       <p class="prompt-line">${escapeHtml(idea.say)}</p>
+      <button class="start-idea-button" type="button" data-start-idea="${escapeHtml(idea.id)}">Start this idea</button>
     </div>
   `;
 }
@@ -2954,6 +2972,7 @@ function ideaCardHtml(idea) {
         <ol>${idea.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
         <div class="why-box"><strong>Why it may help:</strong> ${escapeHtml(idea.why)}</div>
         <div class="say-box">${escapeHtml(idea.say)}</div>
+        <button class="start-idea-button" type="button" data-start-idea="${escapeHtml(idea.id)}">Start guided play</button>
         ${structured}
         ${caution}
         <div class="source-row">${source}</div>
@@ -2972,6 +2991,7 @@ function renderList() {
   if (state.category === "saved") context.push("saved");
   else if (state.category !== "all") context.push(state.category.toLowerCase());
   if (state.audience !== "all") context.push(`for ${state.audience}`);
+  if (state.moment !== "all") context.push(state.moment.replaceAll("-", " "));
   if (state.query) context.push(`matching "${state.query}"`);
   elements.resultContext.textContent = context.length ? context.join(" | ") : "from your notes";
 
@@ -3039,12 +3059,14 @@ function setAudience(audience) {
 function clearFilters() {
   state.category = "all";
   state.audience = "all";
+  state.moment = "all";
   state.query = "";
   state.visibleCount = 12;
   elements.searchInput.value = "";
   elements.clearSearchButton.hidden = true;
   setActiveButtons(elements.categoryFilter, "category", "all");
   setActiveButtons(elements.audienceFilter, "audience", "all");
+  setActiveButtons(elements.momentFilter, "moment", "all");
   renderList();
 }
 
@@ -3119,6 +3141,7 @@ function makePlan() {
         <h3>${escapeHtml(item.idea.title)}</h3>
         <p>${escapeHtml(item.idea.summary)}</p>
         <small>${escapeHtml(item.idea.say)}</small>
+        <button class="plan-start-button" type="button" data-start-idea="${escapeHtml(item.idea.id)}">Start this step</button>
       </div>
     </li>
   `).join("");
@@ -3194,6 +3217,15 @@ elements.audienceFilter.addEventListener("click", (event) => {
   if (button) setAudience(button.dataset.audience);
 });
 
+elements.momentFilter.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-moment]");
+  if (!button) return;
+  state.moment = button.dataset.moment;
+  state.visibleCount = 12;
+  setActiveButtons(elements.momentFilter, "moment", state.moment);
+  renderList();
+});
+
 elements.categoryFilter.addEventListener("click", (event) => {
   const button = event.target.closest("[data-category]");
   if (button) setCategory(button.dataset.category);
@@ -3218,7 +3250,9 @@ elements.bottomNav.addEventListener("click", (event) => {
     setCategory("saved");
     document.querySelector("#explore").scrollIntoView({ behavior: "smooth" });
   } else {
-    document.querySelector(`#${button.dataset.nav}`).scrollIntoView({ behavior: "smooth" });
+    document.querySelector(`#${button.dataset.nav}`).scrollIntoView({
+      behavior: button.dataset.nav === "history" ? "instant" : "smooth"
+    });
   }
 });
 
